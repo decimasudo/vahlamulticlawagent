@@ -8,14 +8,11 @@ import LandingPage from "@/components/LandingPage";
 import InteractiveBackground from "@/components/InteractiveBackground";
 
 export default function Root() {
-  // Kita mulai dengan state 'CHECKING' untuk menghindari flicker/flash splash screen
   const [currentStep, setCurrentStep] = useState<"BOOT" | "LANDING" | "CHECKING">("CHECKING");
   const router = useRouter();
 
   useEffect(() => {
-    // Cek apakah user sudah pernah melewati boot sequence di sesi ini
     const hasBooted = sessionStorage.getItem("vahla_booted");
-    
     if (hasBooted === "true") {
       setCurrentStep("LANDING");
     } else {
@@ -24,27 +21,25 @@ export default function Root() {
   }, []);
 
   const handleBootComplete = () => {
-    // Simpan status ke sessionStorage agar refresh/navigasi balik tidak memicu boot lagi
     sessionStorage.setItem("vahla_booted", "true");
     setCurrentStep("LANDING");
   };
 
-  // Jangan render apapun selama pengecekan awal untuk menghindari flash
   if (currentStep === "CHECKING") {
-    return <div className="min-h-screen bg-[#151515]" />;
-  }
-
-  if (currentStep === "BOOT") {
-    return <SplashScreen onComplete={handleBootComplete} />;
+    return <div className="min-h-screen bg-[#0a0a0a]" />;
   }
 
   return (
     <main className="min-h-screen relative selection:bg-industrial selection:text-black">
-      <div className="scanline" />
+      {/* Background selalu jalan di paling belakang (-z-10) */}
       <InteractiveBackground />
-      
-      {/* Navigasi ke /dashboard */}
-      <LandingPage onEnter={() => router.push("/dashboard")} />
+      <div className="scanline" />
+
+      {currentStep === "BOOT" ? (
+        <SplashScreen onComplete={handleBootComplete} />
+      ) : (
+        <LandingPage onEnter={() => router.push("/dashboard")} />
+      )}
     </main>
   );
 }
