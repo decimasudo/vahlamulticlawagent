@@ -24,8 +24,8 @@ export default function InteractiveBackground() {
     class Particle {
       x: number; y: number; size: number; speedX: number; speedY: number; opacity: number;
       constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
+        this.x = Math.random() * canvas!.width;
+        this.y = Math.random() * canvas!.height;
         this.size = Math.random() * 2 + 0.5;
         this.speedX = Math.random() * 1 - 0.5;
         this.speedY = Math.random() * -1.5 - 0.5; // Bergerak ke atas
@@ -35,8 +35,8 @@ export default function InteractiveBackground() {
         this.x += this.speedX + (mouse.x / 100);
         this.y += this.speedY;
         if (this.y < 0) {
-          this.y = canvas.height;
-          this.x = Math.random() * canvas.width;
+          this.y = canvas!.height;
+          this.x = Math.random() * canvas!.width;
         }
       }
       draw() {
@@ -59,22 +59,22 @@ export default function InteractiveBackground() {
     };
 
     const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, canvas!.width, canvas!.height);
       
       // Draw Industrial Grid
       ctx.strokeStyle = "rgba(102, 102, 102, 0.1)";
       ctx.lineWidth = 1;
       const gridSize = 50;
-      for (let x = 0; x < canvas.width; x += gridSize) {
+      for (let x = 0; x < canvas!.width; x += gridSize) {
         ctx.beginPath();
         ctx.moveTo(x + (mouse.x / 50), 0);
-        ctx.lineTo(x + (mouse.x / 50), canvas.height);
+        ctx.lineTo(x + (mouse.x / 50), canvas!.height);
         ctx.stroke();
       }
-      for (let y = 0; y < canvas.height; y += gridSize) {
+      for (let y = 0; y < canvas!.height; y += gridSize) {
         ctx.beginPath();
         ctx.moveTo(0, y + (mouse.y / 50));
-        ctx.lineTo(canvas.width, y + (mouse.y / 50));
+        ctx.lineTo(canvas!.width, y + (mouse.y / 50));
         ctx.stroke();
       }
 
