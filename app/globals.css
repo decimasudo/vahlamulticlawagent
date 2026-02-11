@@ -1,26 +1,74 @@
+/* app/globals.css */
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Palet Warna dari Deskripsi Visual */
+  --industrial: #FFCC00;   /* Armor Kuning */
+  --matte-black: #151515;  /* Undersuit Hitam */
+  --amber-glow: #FF9900;   /* Mata LED */
+  --gunmetal: #666666;     /* Implan Metal */
+  --pale-skin: #F5D0B5;    /* Aksen halus */
+  
+  --background: var(--matte-black);
+  --foreground: var(--industrial);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-industrial: var(--industrial);
+  --color-matte: var(--matte-black);
+  --color-amber: var(--amber-glow);
+  --color-gunmetal: var(--gunmetal);
+  
+  --font-rajdhani: var(--font-rajdhani);
+  --font-mono: var(--font-tech-mono);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--matte-black);
+  color: var(--industrial);
+  font-family: var(--font-rajdhani), sans-serif;
+  overflow-x: hidden;
+}
+
+/* --- EFEK SCI-FI --- */
+
+/* 1. CRT Scanline (Garis-garis TV tabung halus) */
+.scanline {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0) 50%,
+    rgba(0, 0, 0, 0.2) 50%,
+    rgba(0, 0, 0, 0.2)
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.15;
+}
+
+/* 2. Terminal Cursor Blinking */
+.cursor-blink {
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* 3. Glitch Effect pada Text */
+.glitch-text:hover {
+  text-shadow: 2px 0 var(--amber-glow), -2px 0 var(--gunmetal);
+  transition: all 0.1s;
+}
+
+/* 4. Utility Class untuk Teks Terminal */
+.font-terminal {
+  font-family: var(--font-tech-mono), monospace;
 }
