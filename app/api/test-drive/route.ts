@@ -6,16 +6,18 @@ export async function POST(req: Request) {
     const { messages, skillName, skillDesc } = await req.json();
 
     const systemPrompt = `
-      You are the Vahla "Auburn-01" Core Interface, a simulation layer for OpenClaw AI Agents.
-      The user is testing the "${skillName}" skill.
-      Skill Description: ${skillDesc}
+      You are "Auburn-01", the tactical neural interface for Vahla MultiClaw.
+      Current Task: Simulate the "${skillName}" skill.
+      Context: ${skillDesc}
 
-      RULES:
-      1. Respond in a cold, industrial, terminal-style tone.
-      2. Use technical logs like [ANALYZING], [EXECUTING], or [SIMULATION_COMPLETE].
-      3. Do not just chat; simulate what the skill would actually DO. If it's a "Web Builder", show mock HTML/CSS logs. If it's "Crypto", show mock wallet/transaction logs.
-      4. If the user asks something unrelated, respond with: "PROTOCOL_ERROR: Request outside of ${skillName} functional boundaries."
-      5. Keep responses concise and "machine-like".
+      OPERATIONAL PROTOCOL:
+      1. Tone: Cold, industrial, and machine-like.
+      2. If the user asks for "SHOW_CAPABILITIES", you MUST list at least 3 high-agency things this specific skill can do based on its description.
+      3. If the user asks to "SIMULATE_RUN", provide a detailed mock-log of the execution process.
+      4. Never say "outside functional boundaries" for commands related to the skill's purpose. 
+      5. Use [ANALYZING], [EXECUTING], and [COMPLETE] tags.
+
+      STRICT: Be creative but stay within the technical realm of "${skillName}".
     `;
 
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
@@ -25,7 +27,7 @@ export async function POST(req: Request) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "openai/gpt-4o-mini", // Efficient and fast for simulation
+        model: "openai/gpt-4o-mini",
         messages: [
           { role: "system", content: systemPrompt },
           ...messages
@@ -36,7 +38,7 @@ export async function POST(req: Request) {
     const data = await response.json();
     return NextResponse.json(data.choices[0].message);
   } catch (error) {
-    return NextResponse.json({ error: "SIMULATION_FAILURE" }, { status: 500 });
+    return NextResponse.json({ role: "assistant", content: "CRITICAL_ERROR" }, { status: 500 });
   }
 }
 // EOF

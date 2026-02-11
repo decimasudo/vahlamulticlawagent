@@ -1,5 +1,6 @@
 // types/index.ts
 
+// types/index.ts
 export interface Skill {
   id: number;
   name: string;
@@ -9,12 +10,10 @@ export interface Skill {
   author: string;
   github_url: string;
   install_command: string;
-  version?: string;
-  license?: string;
-  tags?: string[];
-  updated_at?: string;
-  downloads?: string;
+  // Field baru untuk Test Drive yang lebih cerdas
+  suggested_commands?: string[]; 
 }
+// EOF
 
 export interface CommunityAgent {
   id: string;
