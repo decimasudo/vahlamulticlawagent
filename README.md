@@ -2,6 +2,8 @@
 
 Official X Account: https://x.com/vahlamulticlaw
 
+CA: 9e6Jy6AqJ8tY2wXDVZUWqJtcYHptYi6FnZj6WwVJpump
+
 Security Partner: [ClawSec](https://github.com/prompt-security/clawsec)
 
 ![Build Status](https://img.shields.io/badge/SYSTEM-ONLINE-green?style=for-the-badge)
