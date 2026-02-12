@@ -2,6 +2,7 @@
 "use client";
 
 import Image from "next/image";
+import { useState, useEffect } from "react";
 import { 
   Search, 
   ShoppingCart, 
@@ -17,6 +18,33 @@ interface Props {
 }
 
 export default function LandingPage({ onEnter }: Props) {
+  const [imageSrc, setImageSrc] = useState("/scifi-girl.jpeg");
+  const [isStriking, setIsStriking] = useState(false); // State untuk efek petir
+  const [isRedActive, setIsRedActive] = useState(false);
+
+  useEffect(() => {
+    // 1. Tunggu 3 Detik (3000ms) sesuai request
+    const startTimer = setTimeout(() => {
+      
+      // 2. Mulai "Lightning Strike" (Flash Putih Terang)
+      setIsStriking(true);
+
+      // 3. Swap gambar di tengah kilatan cahaya (sangat cepat, 50ms)
+      setTimeout(() => {
+        setImageSrc("/scifi-girl-red.jpeg");
+        setIsRedActive(true);
+      }, 50);
+
+      // 4. Matikan efek kilatan dengan cepat (total durasi petir ~200-300ms)
+      setTimeout(() => {
+        setIsStriking(false);
+      }, 250);
+
+    }, 3000);
+
+    return () => clearTimeout(startTimer);
+  }, []);
+
   const steps = [
     {
       id: "01",
@@ -109,7 +137,6 @@ export default function LandingPage({ onEnter }: Props) {
             <div className="relative w-72 h-96 md:w-[400px] md:h-[500px]">
               {/* Main Image Frame */}
               <div className="absolute inset-0 border-[12px] border-industrial z-10 shadow-[0_0_40px_rgba(255,204,0,0.15)]">
-                 {/* Decorative Bolts */}
                  <div className="absolute -top-4 -left-4 w-4 h-4 bg-gunmetal rounded-full border-2 border-black" />
                  <div className="absolute -top-4 -right-4 w-4 h-4 bg-gunmetal rounded-full border-2 border-black" />
                  <div className="absolute -bottom-4 -left-4 w-4 h-4 bg-gunmetal rounded-full border-2 border-black" />
@@ -119,11 +146,31 @@ export default function LandingPage({ onEnter }: Props) {
               {/* The Image */}
               <div className="absolute inset-2 overflow-hidden bg-black">
                 <Image 
-                  src="/scifi-girl.jpeg" 
+                  src={imageSrc} 
                   alt="Auburn-Cyber-01 Interface" 
                   fill 
-                  className="object-cover grayscale hover:grayscale-0 transition-all duration-700 scale-110 hover:scale-100"
+                  priority
+                  className={`
+                    object-cover transition-all duration-75 ease-out
+                    ${isStriking 
+                      ? 'scale-105 brightness-[5.0] contrast-200 blur-[1px]' // EFEK PETIR (Sangat Terang & Cepat)
+                      : 'scale-100'
+                    }
+                    ${isRedActive && !isStriking
+                      ? 'grayscale-0' // Warna Merah Menyala
+                      : 'grayscale hover:grayscale-0' // Biru/Original (Grayscale default)
+                    }
+                  `}
                 />
+                
+                {/* Lightning Flash Overlay (Layer tambahan untuk kilatan putih) */}
+                <div 
+                    className={`
+                        absolute inset-0 bg-white mix-blend-hard-light pointer-events-none transition-opacity duration-75
+                        ${isStriking ? 'opacity-80' : 'opacity-0'}
+                    `} 
+                />
+
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
               </div>
 
@@ -138,8 +185,6 @@ export default function LandingPage({ onEnter }: Props) {
 
       {/* How It Works Section */}
       <div className="w-full bg-gradient-to-b from-[#050505] via-[#0a0a0a] to-[#111111] text-white pb-24">
-        
-        {/* Hero Header */}
         <div className="px-8 py-20 text-center bg-gradient-to-b from-industrial/10 via-transparent to-transparent border-b border-gunmetal/20 relative overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,204,0,0.03)_0%,transparent_70%)]"></div>
           <h1 className="text-5xl font-black uppercase tracking-tighter mb-4 relative z-10">
@@ -150,46 +195,32 @@ export default function LandingPage({ onEnter }: Props) {
           </p>
         </div>
 
-        {/* Steps Container */}
         <div className="p-8">
           <div className="max-w-5xl mx-auto">
-            
-            {/* Diagram Layout */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
-              
-              {/* Connecting Line (Desktop Only) */}
               <div className="hidden lg:block absolute top-12 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-900 via-amber/50 to-industrial/50 z-0" />
 
               {steps.map((step, index) => (
                 <div key={step.id} className="relative z-10 group">
-                  {/* Step Card */}
                   <div className="bg-[#0a0a0a] border border-gunmetal/30 p-6 pt-10 h-full hover:border-industrial/50 transition-all duration-500 hover:-translate-y-2">
-                    
-                    {/* Icon Bubble */}
                     <div className={`
                       absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-[#111] border-2 border-gunmetal 
                       flex items-center justify-center shadow-xl group-hover:border-industrial transition-colors
                     `}>
                       <step.icon className={`w-5 h-5 ${step.color}`} />
                     </div>
-
-                    {/* Step Number */}
                     <div className="text-center mb-4">
                       <span className="font-terminal text-[10px] text-gunmetal uppercase tracking-[0.3em]">
                         Step_{step.id}
                       </span>
                     </div>
-
                     <h3 className="text-xl font-bold text-center uppercase mb-3 group-hover:text-white transition-colors">
                       {step.title}
                     </h3>
-                    
                     <p className="text-xs text-gray-500 text-center leading-relaxed font-terminal">
                       {step.desc}
                     </p>
                   </div>
-
-                  {/* Arrow (Mobile/Tablet only) */}
                   {index < steps.length - 1 && (
                     <div className="lg:hidden flex justify-center py-4 text-gunmetal">
                       <ArrowRight className="w-6 h-6 rotate-90" />
@@ -199,7 +230,6 @@ export default function LandingPage({ onEnter }: Props) {
               ))}
             </div>
 
-            {/* Feature Highlights */}
             <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="p-6 bg-white/5 border border-white/5 rounded-sm flex items-start gap-4">
                 <Zap className="w-8 h-8 text-industrial shrink-0" />
