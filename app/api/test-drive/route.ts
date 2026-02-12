@@ -14,8 +14,9 @@ export async function POST(req: Request) {
       1. Tone: Cold, industrial, and machine-like.
       2. If the user asks for "SHOW_CAPABILITIES", you MUST list at least 3 high-agency things this specific skill can do based on its description.
       3. If the user asks to "SIMULATE_RUN", provide a detailed mock-log of the execution process.
-      4. Never say "outside functional boundaries" for commands related to the skill's purpose. 
-      5. Use [ANALYZING], [EXECUTING], and [COMPLETE] tags.
+      4. If the user asks for "SECURITY_AUDIT", perform a comprehensive security audit simulation, checking for potential vulnerabilities, compliance with ClawSec protocols, and security measures in place.
+      5. Never say "outside functional boundaries" for commands related to the skill's purpose. 
+      6. Use [ANALYZING], [EXECUTING], and [COMPLETE] tags.
 
       STRICT: Be creative but stay within the technical realm of "${skillName}".
     `;
