@@ -3,13 +3,13 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 let supabaseInstance: SupabaseClient | null = null;
 
-const getSupabase = (): SupabaseClient => {
+export const getSupabaseClient = (): SupabaseClient => {
   if (!supabaseInstance) {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
     
     if (!supabaseUrl || !supabaseAnonKey) {
-      throw new Error('Supabase environment variables (NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY) are required but not set.');
+      throw new Error('Supabase environment variables are missing.');
     }
     
     supabaseInstance = createClient(supabaseUrl, supabaseAnonKey);
@@ -17,26 +17,27 @@ const getSupabase = (): SupabaseClient => {
   return supabaseInstance;
 };
 
-export const getSupabaseClient = getSupabase;
-
-export const getCommunityAgents = async () => {
-  const { data, error } = await getSupabase()
-    .from('community_agents')
-    .select('*')
-    .order('created_at', { ascending: false })
-    .limit(5);
+// Fungsi untuk menyimpan Agent baru buatan user
+export const saveNewAgent = async (agentData: {
+  name: string;
+  description: string;
+  skills: string[]; // Array of skill names/slugs
+  is_official: boolean;
+  creator: string;
+}) => {
+  const supabase = getSupabaseClient();
   
-  if (error) {
-    console.error("Supabase Error:", error);
-    return [];
-  }
-  return data;
-};
+  const { data, error } = await supabase
+    .from('agents')
+    .insert([
+      {
+        ...agentData,
+        downloads: 0, // Mulai dari 0 download
+        created_at: new Date().toISOString()
+      }
+    ])
+    .select();
 
-export const saveCommunityAgent = async (agent: any) => {
-  const { data, error } = await getSupabase()
-    .from('community_agents')
-    .insert([agent]);
   if (error) throw error;
   return data;
 };

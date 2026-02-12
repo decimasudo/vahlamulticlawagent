@@ -1,36 +1,102 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# VAHLA: VIRTUAL AUTONOMOUS HUMAN-LIKE AGENTS (Mk-I)
 
-## Getting Started
+Official Repository: [Demerzels Lab](https://github.com/demerzels-lab)
 
-First, run the development server:
+Security Partner: [ClawsSec](https://github.com/prompt-security/clawsec)
+
+![Build Status](https://img.shields.io/badge/SYSTEM-ONLINE-green?style=for-the-badge)
+![Security Level](https://img.shields.io/badge/SECURITY-CLAWSEC_PROTECTED-red?style=for-the-badge)
+![Architecture](https://img.shields.io/badge/ARCHITECTURE-NEURAL_AGENT-blue?style=for-the-badge)
+
+## 1. SYSTEM OVERVIEW
+VAHLA Mk-I is a next-generation AI Agent Construction Framework designed for secure, modular AI development and deployment. This repository houses the complete source code for the **Tri-Layer Architecture**, integrating agent skills, data persistence, and user interfaces with enterprise-grade security through ClawsSec integration.
+
+The system is divided into three primary sectors:
+
+### SECTOR A: AGENT SKILLS CORE (Python/Node.js)
+**Role:** Skill Processing & AI Logic
+* **Responsibility:** Handles skill execution, data processing, and AI model integration.
+* **Modules:** * `skills/`: Modular skill implementations from the community repository.
+    * `core/`: Agent logic and decision-making algorithms.
+    * `interfaces/`: API endpoints for skill execution.
+
+### SECTOR B: DATA PERSISTENCE LAYER (Supabase)
+**Role:** Secure Data Storage & Authentication
+* **Responsibility:** Manages agent configurations, user sessions, and secure data storage.
+* **Capabilities:**
+    * Row Level Security (RLS) for data isolation.
+    * Real-time subscriptions for agent updates.
+    * JWT-based authentication with ClawsSec validation.
+
+### SECTOR C: NEURAL INTERFACE (Next.js 16 / TypeScript)
+**Role:** User Dashboard & Agent Management
+* **Responsibility:** Provides the web interface for building, configuring, and monitoring AI agents.
+* **Stack:** React, TailwindCSS, Supabase, Lucide Icons.
+* **Security:** Integrated with ClawsSec for secure agent deployment and monitoring.
+
+---
+
+## 2. DEPLOYMENT PROTOCOLS
+
+### 2.1 PREREQUISITES
+Ensure your local environment meets the following specifications before attempting initialization:
+* Node.js v18.0.0 or higher (Interface Layer)
+* pnpm or npm (Package Management)
+* Supabase account (Data Layer)
+
+### 2.2 INITIALIZATION SEQUENCE
+To bring the VAHLA Interface online, execute the following commands in your terminal:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Clone the repository
+git clone https://github.com/your-repo/vahlamulticlawagent.git
+
+# Enter the root directory
+cd vahlamulticlawagent
+
+# Install Interface dependencies
+pnpm install
+
+# Configure environment variables
+cp .env.example .env.local
+# Edit .env.local with your Supabase credentials
+
+# Initiate Neural Link (Development Mode)
+pnpm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The interface will be available at http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+NOTE: The Agent Skills Core will run in SIMULATION MODE by default unless connected to external AI services.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 3. OPERATIONAL FEATURES
 
-## Learn More
+### AGENT DASHBOARD
+Real-time visualization of agent metrics, including "Skill Modules" (Capabilities) and "Saved Configurations" (Bookmarks).
 
-To learn more about Next.js, take a look at the following resources:
+### SKILL MARKETPLACE
+Browse and integrate community-developed skills from the ELSA Multi-Skill repository.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### SECURE AUTHENTICATION
+Agent management is handled via Supabase Auth with ClawsSec security validation, ensuring only authorized users can deploy agents.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### TEST DRIVE MODE
+Simulate agent behavior before deployment with the integrated testing interface.
 
-## Deploy on Vercel
+## 4. SECURITY & CONTRIBUTIONS
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This repository implements ClawsSec security protocols. All modifications must be submitted via Pull Request to the main branch.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Security Features:**
+- ClawsSec integration for secure agent deployment
+- Supabase RLS for data protection
+- Environment variable validation
+
+Reporting Security Issues: Use the issue tracker with the label [SECURITY].
+
+Refer to CONTRIBUTING.md for detailed protocols regarding code contributions and security standards.
+
+## 5. LICENSE
+MIT License Copyright (c) 2026 Demerzels Lab & ClawsSec Security Team.
+
+Authorized Personnel Only.

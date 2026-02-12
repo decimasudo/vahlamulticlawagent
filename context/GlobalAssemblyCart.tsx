@@ -2,22 +2,60 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation"; // TAMBAH INI
+import { useRouter } from "next/navigation";
 import { useBuilder } from "@/context/BuilderContext";
-import { Cpu, X, Trash2, Rocket, Zap, AlertTriangle } from "lucide-react"; // Ganti FileCode2 jadi Rocket
+import { saveNewAgent } from "@/lib/supabase"; // Import fungsi save
+import { Cpu, X, Trash2, Rocket, Zap, AlertTriangle, Edit3, Save } from "lucide-react";
+import { toast } from "sonner";
 
 export default function GlobalAssemblyCart() {
-  const router = useRouter(); // INISIALISASI ROUTER
-  const { draftSkills, agentName, removeSkill, clearCart, isHydrated } = useBuilder();
+  const router = useRouter();
+  const { draftSkills, agentName, setAgentName, removeSkill, clearCart, isHydrated } = useBuilder();
   const [isOpen, setIsOpen] = useState(false);
+  const [isSaving, setIsSaving] = useState(false); // State loading saat save ke DB
 
   if (!isHydrated) return null;
 
-  // LOGIKA BARU: Redirect ke halaman Deploy
-  const handleProceedToDeploy = () => {
+  // LOGIKA BARU: Save ke DB dulu, baru Redirect
+  const handleProceedToDeploy = async () => {
     if (draftSkills.length === 0) return;
-    setIsOpen(false);
-    router.push("/dashboard/deploy"); // Pindah ke halaman animasi
+
+    // 1. Validasi Nama
+    if (!agentName || agentName.trim() === "" || agentName === "Custom Unit") {
+      toast.error("PLEASE ENTER A VALID UNIT DESIGNATION NAME.");
+      // Fokuskan ke input (opsional, via ref)
+      return;
+    }
+
+    setIsSaving(true);
+    toast.loading("REGISTERING UNIT TO ARCHIVES...", { id: "saving-agent" });
+
+    try {
+      // 2. Simpan ke Supabase
+      await saveNewAgent({
+        name: agentName,
+        description: `Community assembled unit with ${draftSkills.length} modules.`,
+        skills: draftSkills.map(s => s.name), // Simpan nama skill saja
+        is_official: false, // Tandai sebagai Community Agent
+        creator: "Anonymous_Operator" // Nanti bisa diganti jika ada sistem Login User
+      });
+
+      toast.success("UNIT REGISTERED SUCCESSFULLY.", { id: "saving-agent" });
+      
+      // 3. Tutup Modal & Redirect ke Animasi Deploy
+      setIsOpen(false);
+      router.push("/dashboard/deploy");
+
+    } catch (error) {
+      console.error(error);
+      toast.error("FAILED TO REGISTER UNIT. DEPLOYING LOCALLY ONLY.", { id: "saving-agent" });
+      
+      // Tetap lanjut deploy meski gagal save ke DB (Fallback)
+      setIsOpen(false);
+      router.push("/dashboard/deploy");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -50,7 +88,7 @@ export default function GlobalAssemblyCart() {
               <div className="flex items-center gap-3">
                 <Zap className="w-5 h-5" />
                 <h2 className="font-black uppercase tracking-widest text-sm">
-                  Neural Assembly // {agentName}
+                  Neural Assembly
                 </h2>
               </div>
               <button onClick={() => setIsOpen(false)} className="hover:bg-black hover:text-industrial p-1 transition-colors">
@@ -59,9 +97,27 @@ export default function GlobalAssemblyCart() {
             </div>
 
             <div className="p-6 overflow-y-auto flex-grow scrollbar-thin scrollbar-thumb-industrial/20">
-              <div className="flex justify-between items-end mb-6">
+              
+              {/* INPUT NAMA AGENT (WAJIB) */}
+              <div className="mb-6 bg-white/5 p-4 border border-gunmetal/50 rounded-sm">
+                <label className="text-[10px] font-bold uppercase text-industrial tracking-widest mb-2 block flex items-center gap-2">
+                  <Edit3 className="w-3 h-3" /> Unit Designation (Required)
+                </label>
+                <input 
+                  type="text" 
+                  value={agentName}
+                  onChange={(e) => setAgentName(e.target.value)}
+                  placeholder="ENTER_UNIT_NAME (e.g. DATA_SCRAPER_V1)"
+                  className="w-full bg-black border border-gunmetal p-3 text-white font-terminal text-sm focus:border-industrial outline-none placeholder:text-gray-700 uppercase"
+                />
+                <p className="text-[9px] text-gray-500 mt-2 font-terminal">
+                  * This name will be used for the installer filename and archived in the community database.
+                </p>
+              </div>
+
+              <div className="flex justify-between items-end mb-4">
                  <p className="text-xs text-gray-400 font-terminal uppercase tracking-wider">
-                   Review injected modules before deploying.
+                   Included Modules ({draftSkills.length})
                  </p>
                  {draftSkills.length > 0 && (
                    <button onClick={clearCart} className="text-[10px] text-red-500 hover:underline font-terminal uppercase">
@@ -100,13 +156,19 @@ export default function GlobalAssemblyCart() {
 
             <div className="p-6 border-t border-gunmetal/30 bg-black/60 shrink-0">
               <button 
-                onClick={handleProceedToDeploy} // PANGGIL FUNGSI BARU DI SINI
-                disabled={draftSkills.length === 0}
+                onClick={handleProceedToDeploy}
+                disabled={draftSkills.length === 0 || isSaving}
                 className="w-full py-4 bg-industrial hover:bg-white text-black font-bold text-sm uppercase tracking-wider transition-all flex items-center justify-center gap-3 disabled:opacity-30 disabled:grayscale group relative overflow-hidden"
               >
-                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform" />
-                <Rocket className="w-5 h-5 group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform relative z-10" /> 
-                <span className="relative z-10">{draftSkills.length === 0 ? "AWAITING MODULES..." : "INITIALIZE DEPLOYMENT"}</span>
+                {isSaving ? (
+                  <span className="animate-pulse">ARCHIVING UNIT TO DATABASE...</span>
+                ) : (
+                  <>
+                    <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform" />
+                    <Rocket className="w-5 h-5 group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform relative z-10" /> 
+                    <span className="relative z-10">INITIALIZE DEPLOYMENT</span>
+                  </>
+                )}
               </button>
             </div>
 

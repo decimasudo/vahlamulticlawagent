@@ -25,7 +25,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     { name: "Command Center", href: "/dashboard", icon: Activity },
     { name: "Skill Market", href: "/dashboard/browse", icon: Store },
     { name: "Agent Templates", href: "/dashboard/agents", icon: Cpu },
-    { name: "Security Protocols", href: "/dashboard/docs", icon: ShieldCheck },
+    { name: "Documentation", href: "/dashboard/docs", icon: ShieldCheck },
     { name: "System Architecture", href: "/dashboard/how-it-works", icon: LayoutGrid },
   ];
 
