@@ -7,7 +7,9 @@ import {
   Cpu, 
   Store, 
   Activity, 
-  ShieldCheck 
+  ShieldCheck,
+  Github,
+  Twitter
 } from "lucide-react";
 
 export default function DashboardHome() {
@@ -31,6 +33,26 @@ export default function DashboardHome() {
           <p className="text-gray-500 font-terminal max-w-xl mx-auto text-sm md:text-base leading-relaxed">
             Vahla Neural Foundry v4.0 is ready. Select an operation mode to begin assembling your high-agency units.
           </p>
+          
+          {/* Social Links */}
+          <div className="flex items-center justify-center gap-4 pt-4">
+            <a 
+              href="https://github.com/decimasudo/vahlamulticlawagent" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="w-8 h-8 bg-black/50 border border-gunmetal/30 hover:border-industrial/50 rounded-sm flex items-center justify-center transition-all hover:scale-110 group"
+            >
+              <Github className="w-4 h-4 text-gray-400 group-hover:text-industrial transition-colors" />
+            </a>
+            <a 
+              href="https://x.com/vahlamulticlaw" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="w-8 h-8 bg-black/50 border border-gunmetal/30 hover:border-industrial/50 rounded-sm flex items-center justify-center transition-all hover:scale-110 group"
+            >
+              <Twitter className="w-4 h-4 text-gray-400 group-hover:text-industrial transition-colors" />
+            </a>
+          </div>
         </div>
 
         {/* Action Grid (Kartu Besar) */}

@@ -7,6 +7,7 @@ import InteractiveBackground from "@/components/InteractiveBackground";
 import { Toaster } from "sonner";
 import { BuilderProvider } from "@/context/BuilderContext"; 
 import GlobalAssemblyCart from "@/context/GlobalAssemblyCart";
+import Image from "next/image";
 import { 
   Cpu, 
   BookOpen, 
@@ -55,8 +56,24 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <aside className="w-64 flex flex-col flex-shrink-0 z-40 bg-black/80 backdrop-blur-md border-r border-gunmetal/30">
           <div className="p-6 border-b border-gunmetal/30 bg-black/40">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-industrial flex items-center justify-center rounded-sm shadow-[0_0_15px_rgba(255,204,0,0.4)]">
-                <span className="font-black text-black text-lg">V</span>
+              <div className="relative w-8 h-8">
+                {/* Sci-Fi Frame */}
+                <div className="absolute inset-0 border-2 border-industrial rounded-sm shadow-[0_0_15px_rgba(255,204,0,0.4)]">
+                  {/* Corner Brackets */}
+                  <div className="absolute -top-1 -left-1 w-2 h-2 border-l-2 border-t-2 border-industrial"></div>
+                  <div className="absolute -top-1 -right-1 w-2 h-2 border-r-2 border-t-2 border-industrial"></div>
+                  <div className="absolute -bottom-1 -left-1 w-2 h-2 border-l-2 border-b-2 border-industrial"></div>
+                  <div className="absolute -bottom-1 -right-1 w-2 h-2 border-r-2 border-b-2 border-industrial"></div>
+                </div>
+                {/* Image */}
+                <div className="absolute inset-1 overflow-hidden rounded-sm">
+                  <Image 
+                    src="/scifi-girl.jpeg" 
+                    alt="VAHLA Logo" 
+                    fill 
+                    className="object-cover grayscale hover:grayscale-0 transition-all duration-300"
+                  />
+                </div>
               </div>
               <div>
                 <h1 className="font-bold text-white text-lg tracking-tight uppercase">VAHLA</h1>
