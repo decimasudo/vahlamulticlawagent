@@ -304,10 +304,7 @@ class MarkdownRenderer {
         if (line.includes('|')) {
             const trimmed = line.trim();
             // Table separator line
-            if (/^\|?[-:|]+\|[-:|]+\|?$/.test(trimmed)) {
-                this.inTable = true;
-                return; // Skip separator line, we'll draw our own
-            }
+        
             // Table data row
             if (trimmed.startsWith('|') || (this.inTable && trimmed.includes('|'))) {
                 this.tableRows.push(line);
