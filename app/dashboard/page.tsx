@@ -1,178 +1,105 @@
-// app/dashboard/page.tsx
+// app/dashboard/page.tsx (NEW WELCOME SCREEN)
 "use client";
 
-import { useState, useMemo } from "react";
-import { useRouter } from "next/navigation"; // Import useRouter untuk navigasi
-import skillsData from "@/data/skills.json"; 
-import { Skill } from "@/types";
-import DownloadSection from "@/components/DownloadSection";
-import InteractiveBackground from "@/components/InteractiveBackground";
-import Pagination from "@/components/Pagination";
-import { Search, Terminal, Info, Cpu } from "lucide-react";
+import Link from "next/link";
+import { 
+  ArrowRight, 
+  Cpu, 
+  Store, 
+  Activity, 
+  ShieldCheck 
+} from "lucide-react";
 
-const ITEMS_PER_PAGE = 12;
-
-export default function Dashboard() {
-  const allSkills: Skill[] = skillsData.skills as unknown as Skill[];
-  const router = useRouter(); // Initialize router
-
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("ALL_MODULES");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [selectedSkills, setSelectedSkills] = useState<Skill[]>([]);
-
-  const categories = useMemo(() => {
-    const cats = new Set(allSkills.map(s => s.category));
-    return ["ALL_MODULES", ...Array.from(cats)];
-  }, [allSkills]);
-
-  const filteredSkills = useMemo(() => {
-    return allSkills.filter((skill) => {
-      const matchesSearch = skill.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                           skill.description.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesCategory = selectedCategory === "ALL_MODULES" || skill.category === selectedCategory;
-      return matchesSearch && matchesCategory;
-    });
-  }, [allSkills, searchTerm, selectedCategory]);
-
-  const totalPages = Math.ceil(filteredSkills.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const paginatedSkills = filteredSkills.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-
-  const toggleSkill = (skill: Skill) => {
-    if (selectedSkills.find((s) => s.id === skill.id)) {
-      setSelectedSkills(selectedSkills.filter((s) => s.id !== skill.id));
-    } else {
-      setSelectedSkills([...selectedSkills, skill]);
-    }
-  };
-
+export default function DashboardHome() {
   return (
-    <main className="min-h-screen relative flex flex-col lg:flex-row overflow-hidden bg-[#0a0a0a]">
-      <div className="scanline" />
-      <InteractiveBackground />
+    <div className="min-h-full flex flex-col justify-center items-center p-8 lg:p-20 relative">
+      
+      {/* Decorative Center Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-industrial/5 rounded-full blur-[100px] pointer-events-none" />
 
-      {/* SIDEBAR */}
-      <aside className="w-full lg:w-72 bg-black/90 border-r-2 border-industrial z-30 flex flex-col h-auto lg:h-screen sticky top-0 backdrop-blur-md">
-        <div className="p-6 border-b border-gunmetal/30">
-          <div className="flex items-center gap-2 mb-2">
-            <div className="w-2 h-2 bg-amber animate-ping" />
-            <span className="font-terminal text-[10px] text-amber tracking-[0.3em]">CORE_NAVIGATOR</span>
-          </div>
-          <h2 className="text-xl font-bold uppercase tracking-tighter text-white">Classifications</h2>
-        </div>
-
-        <nav className="flex-grow overflow-y-auto no-scrollbar p-4 space-y-1">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => { setSelectedCategory(cat); setCurrentPage(1); }}
-              className={`w-full text-left px-4 py-3 font-terminal text-[11px] uppercase transition-all flex justify-between items-center group ${
-                selectedCategory === cat 
-                ? "bg-industrial text-black font-bold shadow-[0_0_15px_rgba(255,204,0,0.3)]" 
-                : "text-gunmetal hover:text-industrial hover:bg-industrial/5"
-              }`}
-            >
-              <span>{cat.replace(/ & /g, '_').replace(/ /g, '_')}</span>
-              <div className={`w-1 h-3 ${selectedCategory === cat ? 'bg-black' : 'bg-gunmetal/30 group-hover:bg-industrial'}`} />
-            </button>
-          ))}
-        </nav>
-
-        <div className="p-6 bg-industrial/5 border-t border-gunmetal/30 text-[10px] font-terminal text-gunmetal">
-          VAHLA_UNIT: AUBURN-01 // STABLE
-        </div>
-      </aside>
-
-      {/* MAIN CONTENT */}
-      <section className="flex-grow flex flex-col h-screen overflow-y-auto relative no-scrollbar">
+      <div className="max-w-4xl w-full space-y-12 relative z-10">
         
-        {/* Top Filter Bar */}
-        <div className="sticky top-0 z-20 bg-black/80 backdrop-blur-md border-b-2 border-industrial p-6">
-          <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="w-full md:flex-grow relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gunmetal w-4 h-4" />
-              <input
-                type="text"
-                placeholder="INPUT_SEARCH_QUERY_..."
-                className="w-full bg-matte/50 border border-gunmetal p-4 pl-12 font-terminal text-industrial outline-none focus:border-industrial transition-all"
-                value={searchTerm}
-                onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
-              />
+        {/* Welcome Header */}
+        <div className="text-center space-y-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-industrial/10 border border-industrial/30 rounded-full text-[10px] font-bold text-industrial uppercase tracking-widest mb-4">
+            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+            System Online
+          </div>
+          <h1 className="text-5xl md:text-7xl font-black text-white uppercase tracking-tighter">
+            Welcome Back, <span className="text-transparent bg-clip-text bg-gradient-to-r from-industrial to-amber-600">Operator.</span>
+          </h1>
+          <p className="text-gray-500 font-terminal max-w-xl mx-auto text-sm md:text-base leading-relaxed">
+            Vahla Neural Foundry v4.0 is ready. Select an operation mode to begin assembling your high-agency units.
+          </p>
+        </div>
+
+        {/* Action Grid (Kartu Besar) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          {/* Card 1: Skill Market (Manual) */}
+          <Link href="/dashboard/browse" className="group relative border border-gunmetal/30 bg-black/40 hover:border-industrial/50 transition-all p-8 flex flex-col justify-between h-64 overflow-hidden rounded-sm">
+            <div className="absolute top-0 right-0 p-20 bg-gradient-to-bl from-blue-500/10 to-transparent rounded-bl-full transform translate-x-10 -translate-y-10 group-hover:scale-110 transition-transform duration-700" />
+            
+            <div className="relative z-10">
+              <div className="w-12 h-12 bg-black border border-gunmetal rounded-sm flex items-center justify-center mb-6 group-hover:border-industrial transition-colors">
+                <Store className="w-6 h-6 text-gray-400 group-hover:text-industrial" />
+              </div>
+              <h3 className="text-2xl font-bold text-white uppercase mb-2">Browse Skill Market</h3>
+              <p className="text-xs text-gray-500 font-terminal">
+                Manually select from 1700+ hardened modules to build a custom unit from scratch.
+              </p>
             </div>
-          </div>
+
+            <div className="flex items-center gap-2 text-industrial text-xs font-bold uppercase tracking-widest mt-auto group-hover:translate-x-2 transition-transform">
+              Start Shopping <ArrowRight className="w-4 h-4" />
+            </div>
+          </Link>
+
+          {/* Card 2: Agent Templates (Instant) */}
+          <Link href="/dashboard/agents" className="group relative border border-gunmetal/30 bg-black/40 hover:border-industrial/50 transition-all p-8 flex flex-col justify-between h-64 overflow-hidden rounded-sm">
+            <div className="absolute top-0 right-0 p-20 bg-gradient-to-bl from-amber-500/10 to-transparent rounded-bl-full transform translate-x-10 -translate-y-10 group-hover:scale-110 transition-transform duration-700" />
+            
+            <div className="relative z-10">
+              <div className="w-12 h-12 bg-black border border-gunmetal rounded-sm flex items-center justify-center mb-6 group-hover:border-industrial transition-colors">
+                <Cpu className="w-6 h-6 text-gray-400 group-hover:text-amber" />
+              </div>
+              <h3 className="text-2xl font-bold text-white uppercase mb-2">Deploy Templates</h3>
+              <p className="text-xs text-gray-500 font-terminal">
+                Use pre-configured blueprints (Crypto, CyberSec, Dev) for instant deployment.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2 text-amber text-xs font-bold uppercase tracking-widest mt-auto group-hover:translate-x-2 transition-transform">
+              Select Blueprint <ArrowRight className="w-4 h-4" />
+            </div>
+          </Link>
+
         </div>
 
-        {/* Skill Grid */}
-        <div className="p-8 max-w-6xl mx-auto w-full flex-grow">
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            {paginatedSkills.map((skill) => { 
-              const isSelected = selectedSkills.find((s) => s.id === skill.id);
-              return (
-                <div 
-                  key={skill.id}
-                  className={`group relative border-2 transition-all duration-300 flex flex-col h-80 ${
-                    isSelected ? "border-industrial bg-industrial/10 shadow-[0_0_20px_rgba(255,204,0,0.1)]" : "border-gunmetal bg-black/40 hover:border-amber"
-                  }`}
-                >
-                  <div className="p-6 flex flex-col h-full relative">
-                    <div className="flex justify-between items-start mb-4">
-                      <span className="font-terminal text-[9px] text-gunmetal">ID_{skill.id.toString().padStart(4, '0')}</span>
-                      <div className="flex gap-2">
-                        {/* TOMBOL NAVIGASI KE DETAIL PAGE */}
-                        <button 
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            router.push(`/dashboard/${skill.slug}`); // Navigasi ke [slug]
-                          }}
-                          className="text-[9px] text-amber border border-amber/40 px-2 py-0.5 hover:bg-amber hover:text-black transition-all font-bold flex items-center gap-1"
-                        >
-                          <Info className="w-3 h-3" /> SPECS
-                        </button>
-                        
-                        <button 
-                          onClick={() => toggleSkill(skill)} 
-                          className={`text-[9px] px-2 py-0.5 font-bold transition-all ${isSelected ? 'bg-industrial text-black' : 'bg-gunmetal/40 text-white hover:bg-industrial hover:text-black'}`}
-                        >
-                          {isSelected ? "DETACH" : "ATTACH"}
-                        </button>
-                      </div>
-                    </div>
-
-                    <h3 className="font-bold text-lg uppercase mb-3 leading-tight tracking-tight group-hover:text-industrial transition-colors">
-                      {skill.name}
-                    </h3>
-                    <p className="font-terminal text-[11px] text-gray-500 line-clamp-4 mb-4 leading-relaxed">
-                      {skill.description}
-                    </p>
-
-                    <div className="mt-auto pt-4 border-t border-gunmetal/10 flex justify-between items-center">
-                      <span className="text-[8px] font-bold text-gunmetal px-2 py-1 bg-white/5 border border-white/10 uppercase tracking-widest">{skill.category}</span>
-                      {isSelected && (
-                        <div className="flex items-center gap-1">
-                          <span className="w-1 h-1 bg-industrial rounded-full animate-ping" />
-                          <span className="text-[8px] font-bold text-industrial uppercase">Sync_Active</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+        {/* Stats Footer */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-12 border-t border-gunmetal/20">
+          <div className="text-center md:text-left">
+            <span className="block text-2xl font-black text-white">1,708</span>
+            <span className="text-[10px] text-gray-500 font-terminal uppercase tracking-widest">Total Modules</span>
           </div>
-
-          <Pagination 
-            currentPage={currentPage} 
-            totalPages={totalPages} 
-            onPageChange={setCurrentPage} 
-          />
+          <div className="text-center md:text-left">
+            <span className="block text-2xl font-black text-white">99.9%</span>
+            <span className="text-[10px] text-gray-500 font-terminal uppercase tracking-widest">Uptime</span>
+          </div>
+          <div className="text-center md:text-left">
+             <div className="flex items-center justify-center md:justify-start gap-2">
+               <ShieldCheck className="w-5 h-5 text-industrial" />
+               <span className="text-2xl font-black text-white">Active</span>
+             </div>
+             <span className="text-[10px] text-gray-500 font-terminal uppercase tracking-widest">ClawSec Armor</span>
+          </div>
+          <div className="text-center md:text-left">
+            <span className="block text-2xl font-black text-white">v4.0.5</span>
+            <span className="text-[10px] text-gray-500 font-terminal uppercase tracking-widest">Kernel Ver</span>
+          </div>
         </div>
-
-        <div className="h-40" />
-      </section>
-
-      <DownloadSection selectedSkills={selectedSkills} />
-    </main>
+      </div>
+    </div>
   );
 }
 // EOF
