@@ -1,8 +1,8 @@
 # VAHLA: VIRTUAL AUTONOMOUS HUMAN-LIKE AGENTS (Mk-I)
 
-Official Repository: [Demerzels Lab](https://github.com/demerzels-lab)
+Official X Account: https://x.com/vahlamulticlaw
 
-Security Partner: [ClawkickSec](https://github.com/prompt-security/clawsec)
+Security Partner: [ClawSec](https://github.com/prompt-security/clawsec)
 
 ![Build Status](https://img.shields.io/badge/SYSTEM-ONLINE-green?style=for-the-badge)
 ![Security Level](https://img.shields.io/badge/SECURITY-CLAWSEC_PROTECTED-red?style=for-the-badge)
