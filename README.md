@@ -7,20 +7,41 @@ Security Partner: [ClawsSec](https://github.com/prompt-security/clawsec)
 ![Build Status](https://img.shields.io/badge/SYSTEM-ONLINE-green?style=for-the-badge)
 ![Security Level](https://img.shields.io/badge/SECURITY-CLAWSEC_PROTECTED-red?style=for-the-badge)
 ![Architecture](https://img.shields.io/badge/ARCHITECTURE-NEURAL_AGENT-blue?style=for-the-badge)
+![Rust](https://img.shields.io/badge/Rust-1.70+-orange?style=for-the-badge)
+![Python](https://img.shields.io/badge/Python-3.11+-blue?style=for-the-badge)
 
 ## 1. SYSTEM OVERVIEW
 VAHLA Mk-I is a next-generation AI Agent Construction Framework designed for secure, modular AI development and deployment. This repository houses the complete source code for the **Tri-Layer Architecture**, integrating agent skills, data persistence, and user interfaces with enterprise-grade security through ClawsSec integration.
 
+### 🏗️ **TECHNOLOGY STACK**
+VAHLA leverages a robust polyglot architecture combining high-performance systems programming with modern web technologies:
+
+**🔧 Core Technologies:**
+- **Rust 1.70+**: High-performance security core (ClawsSec Sentinel)
+- **Python 3.11+**: AI/ML processing and agent logic
+- **TypeScript 5.0+**: Type-safe frontend and API development
+- **Next.js 16**: React framework with App Router
+
+**🛡️ Security & Infrastructure:**
+- **ClawsSec**: Custom security framework written in Rust
+- **Supabase**: PostgreSQL with Row Level Security
+- **TailwindCSS**: Utility-first styling framework
+
 The system is divided into three primary sectors:
 
-### SECTOR A: AGENT SKILLS CORE (Python/Node.js)
+### SECTOR A: AGENT SKILLS CORE (Python/Rust)
 **Role:** Skill Processing & AI Logic
 * **Responsibility:** Handles skill execution, data processing, and AI model integration.
-* **Modules:** * `skills/`: Modular skill implementations from the community repository.
-    * `core/`: Agent logic and decision-making algorithms.
-    * `interfaces/`: API endpoints for skill execution.
+* **Core Technologies:** 
+  * **Python**: Machine learning pipelines, agent reasoning algorithms
+  * **Rust**: High-performance cryptographic operations and secure enclaves
+* **Modules:** 
+  * `skills/`: Modular skill implementations from the community repository.
+  * `core/`: Agent logic and decision-making algorithms.
+  * `crates/clawsec_core/`: Rust-based security primitives.
+  * `vahla_sdk/`: Python SDK for agent development.
 
-### SECTOR B: DATA PERSISTENCE LAYER (Supabase)
+### SECTOR B: DATA PERSISTENCE LAYER (Supabase/PostgreSQL)
 **Role:** Secure Data Storage & Authentication
 * **Responsibility:** Manages agent configurations, user sessions, and secure data storage.
 * **Capabilities:**
@@ -40,9 +61,11 @@ The system is divided into three primary sectors:
 
 ### 2.1 PREREQUISITES
 Ensure your local environment meets the following specifications before attempting initialization:
-* Node.js v18.0.0 or higher (Interface Layer)
-* pnpm or npm (Package Management)
-* Supabase account (Data Layer)
+* **Node.js v18.0.0 or higher** (Interface Layer)
+* **Rust 1.70+** (Security Core & Performance Components)
+* **Python 3.11+** (AI/ML Processing & SDK)
+* **pnpm or npm** (Package Management)
+* **Supabase account** (Data Layer)
 
 ### 2.2 INITIALIZATION SEQUENCE
 To bring the VAHLA Interface online, execute the following commands in your terminal:
@@ -69,7 +92,27 @@ The interface will be available at http://localhost:3000.
 
 NOTE: The Agent Skills Core will run in SIMULATION MODE by default unless connected to external AI services.
 
-## 3. OPERATIONAL FEATURES
+### 2.3 RUST & PYTHON COMPONENTS
+VAHLA includes high-performance components written in Rust and Python:
+
+**🔒 ClawsSec Core (Rust):**
+```bash
+cd crates/clawsec_core
+cargo build --release
+```
+- Memory-safe cryptographic operations
+- Hardware-backed secure enclaves
+- Zero-cost abstractions for security primitives
+
+**🐍 VAHLA SDK (Python):**
+```bash
+pip install vahla-sdk
+```
+- Plugin architecture for custom agent skills
+- Secure enclave integration
+- Machine learning pipeline management
+
+---
 
 ### AGENT DASHBOARD
 Real-time visualization of agent metrics, including "Skill Modules" (Capabilities) and "Saved Configurations" (Bookmarks).
