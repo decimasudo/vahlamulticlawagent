@@ -41,4 +41,27 @@ export const saveNewAgent = async (agentData: {
   if (error) throw error;
   return data;
 };
+
+// Helper function untuk fetch community agents
+export const getCommunityAgents = async () => {
+  const supabase = getSupabaseClient();
+  const { data, error } = await supabase
+    .from('community_agents')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(5);
+  
+  if (error) throw error;
+  return data;
+};
+
+// Helper function untuk save community agent
+export const saveCommunityAgent = async (agent: any) => {
+  const supabase = getSupabaseClient();
+  const { data, error } = await supabase
+    .from('community_agents')
+    .insert([agent]);
+  if (error) throw error;
+  return data;
+};
 // EOF

@@ -8,7 +8,6 @@ import { Toaster } from "sonner";
 import { BuilderProvider } from "@/context/BuilderContext"; 
 import GlobalAssemblyCart from "@/context/GlobalAssemblyCart";
 import { 
-  LayoutGrid, 
   Cpu, 
   BookOpen, 
   Activity, 
@@ -26,7 +25,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     { name: "Skill Market", href: "/dashboard/browse", icon: Store },
     { name: "Agent Templates", href: "/dashboard/agents", icon: Cpu },
     { name: "Documentation", href: "/dashboard/docs", icon: ShieldCheck },
-    { name: "System Architecture", href: "/dashboard/how-it-works", icon: LayoutGrid },
   ];
 
   return (
